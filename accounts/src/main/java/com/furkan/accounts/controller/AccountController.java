@@ -8,24 +8,21 @@ import com.furkan.accounts.dto.ResponseDTO;
 
 import com.furkan.accounts.service.AccountService;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = (MediaType.APPLICATION_JSON_VALUE))
+@AllArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
+
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createAccount(@RequestBody CustomerDTO customerDTO) {
@@ -37,4 +34,10 @@ public class AccountController {
                 body(new ResponseDTO(AccountConstants.STATUS_201, AccountConstants.MESSAGE_201));
     }
 
+    @GetMapping("/fetch")
+    public ResponseEntity<CustomerDTO> fetchAccountDetails(@RequestParam String mobileNumber) {
+        CustomerDTO customerDTO = accountService.fetchAccount(mobileNumber);
+
+        return ResponseEntity.status(HttpStatus.OK).body(customerDTO);
+    }
 }

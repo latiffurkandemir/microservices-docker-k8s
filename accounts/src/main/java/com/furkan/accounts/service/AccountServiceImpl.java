@@ -1,13 +1,17 @@
 package com.furkan.accounts.service;
 
 import com.furkan.accounts.constants.AccountConstants;
+import com.furkan.accounts.dto.AccountDTO;
 import com.furkan.accounts.dto.CustomerDTO;
 import com.furkan.accounts.entity.Account;
 import com.furkan.accounts.entity.Customer;
 import com.furkan.accounts.exception.CustomerAlreadyExistsException;
+import com.furkan.accounts.exception.ResourceNotFoundException;
+import com.furkan.accounts.mapper.AccountMapper;
 import com.furkan.accounts.mapper.CustomerMapper;
 import com.furkan.accounts.repository.AccountRepository;
 import com.furkan.accounts.repository.CustomerRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,16 +19,12 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
+@AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
     private final CustomerRepository customerRepository;
-
-    public AccountServiceImpl(AccountRepository accountRepository, CustomerRepository customerRepository) {
-        this.accountRepository = accountRepository;
-        this.customerRepository = customerRepository;
-    }
 
 
     @Override
@@ -55,5 +55,18 @@ public class AccountServiceImpl implements AccountService {
         newAccount.setCreatedAt(LocalDateTime.now());
         newAccount.setCreatedBy("Anonymous");
         return newAccount;
+    }
+
+    @Override
+    public CustomerDTO fetchAccount(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+
+        Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+        );
+        CustomerDTO customerDTO = CustomerMapper.mapToCustomerDTO(customer, new CustomerDTO());
+        customerDTO.setAccountDTO(AccountMapper.mapToAccountDTO(account, new AccountDTO()));
+        return customerDTO;
     }
 }
