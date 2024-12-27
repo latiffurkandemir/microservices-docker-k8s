@@ -15,18 +15,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = (MediaType.APPLICATION_JSON_VALUE))
 @AllArgsConstructor
+@Validated
 public class AccountController {
 
     private final AccountService accountService;
 
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO> createAccount(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody CustomerDTO customerDTO) {
 
         accountService.createAccount(customerDTO);
 
@@ -36,7 +38,9 @@ public class AccountController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDTO> fetchAccountDetails(@RequestParam String mobileNumber) {
+    public ResponseEntity<CustomerDTO> fetchAccountDetails(@RequestParam
+                                                               @Pattern(regexp = "(^$|[0-9]{10})", message = "mobile number must be 10 digits")
+                                                               String mobileNumber) {
         CustomerDTO customerDTO = accountService.fetchAccount(mobileNumber);
 
         return ResponseEntity.status(HttpStatus.OK).body(customerDTO);
@@ -57,7 +61,9 @@ public class AccountController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDTO> deleteAccountDetails(@RequestParam String mobileNumber) {
+    public ResponseEntity<ResponseDTO> deleteAccountDetails(@RequestParam
+                                                                @Pattern(regexp = "(^$|[0-9]{10})", message = "mobile number must be 10 digits")
+                                                                String mobileNumber) {
         boolean isDeleted = accountService.deleteAccount(mobileNumber);
         if (isDeleted) {
             return ResponseEntity
