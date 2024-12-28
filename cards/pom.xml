@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.furkan</groupId>
-	<artifactId>loans</artifactId>
+	<artifactId>cards</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>loans</name>
-	<description>Microservice for Loans</description>
+	<name>cards</name>
+	<description>Microservice for Cards</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -73,7 +73,7 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.7.0</version>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
