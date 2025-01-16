@@ -2,6 +2,7 @@ package com.furkan.accounts.controller;
 
 
 import com.furkan.accounts.constants.AccountConstants;
+import com.furkan.accounts.dto.AccountsContactInfoDTO;
 import com.furkan.accounts.dto.CustomerDTO;
 import com.furkan.accounts.dto.ErrorResponseDTO;
 import com.furkan.accounts.dto.ResponseDTO;
@@ -40,6 +41,8 @@ public class AccountController {
 
     private final Environment environment;
 
+    private final AccountsContactInfoDTO accountsContactInfoDTO;
+
     @Operation(
             summary = "Create Account REST API",
             description = "REST API to create new Customer &  Account inside EazyBank",
@@ -58,6 +61,7 @@ public class AccountController {
             }
     )
     @PostMapping("/create")
+
     public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody CustomerDTO customerDTO) {
 
         accountService.createAccount(customerDTO);
@@ -211,4 +215,25 @@ public class AccountController {
     }
 
 
+    @Operation(
+            summary = "Get Contact info",
+            description = "Get Contact info details that can be reached out in case of any issues",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "HTTP Status OK"
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "HTTP Status Internal Server Error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ErrorResponseDTO.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDTO> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDTO);//we can create more properties inside application.yml file
+    }
 }
