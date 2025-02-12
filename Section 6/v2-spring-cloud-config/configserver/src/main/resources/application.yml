@@ -2,11 +2,18 @@ spring:
   application:
     name: "configserver"
   profiles:
-    active: native
+    #active: native #if we are using classpath location or filesystem location
+    active: git
   cloud:
     config:
       server:
-        native:
-          search-locations: "classpath:/config"
+        #native:
+          #search-locations: "classpath:/config"
+        git:
+          uri: "https://github.com/eazybytes/eazybytes-config.git"
+          default-label: main #repo branch
+          timeout: 5 #wait for maximum 5 seconds, throw exception otherwise
+          clone-on-start: true #clone the github repo into local system during startup
+          force-pull: true #config server always reads properties from the github repo
 server:
   port: 8071
