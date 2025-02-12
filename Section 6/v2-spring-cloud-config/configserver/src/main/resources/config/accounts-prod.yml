@@ -1,0 +1,11 @@
+build:
+  version: "1.0"
+
+accounts:
+  message: "Welcome to DemirBank accounts related prod APIs"
+  contactDetails:
+    name: "Jack Smith - Product Owner"
+    email: "jacksmith@gmail.com"
+  onCallSupport:
+    - (533) 522-1234
+    - (533) 523-1345
