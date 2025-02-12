@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: "accounts"
+  profiles:
+    active: "prod" #by default, it will activate prod profile on config server
   datasource:
     url: jdbc:h2:mem:test
     driverClassName: org.h2.Driver
@@ -16,4 +18,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import: "optional:configserver:http://localhost:8071/" #optional can be removed according to situation
 
