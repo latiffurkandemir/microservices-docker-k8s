@@ -15,5 +15,10 @@ spring:
           timeout: 5 #wait for maximum 5 seconds, throw exception otherwise
           clone-on-start: true #clone the github repo into local system during startup
           force-pull: true #config server always reads properties from the github repo
+
+encrypt:
+  key: "iZ111om/YnTZ9IOoHVnkhmRTwzoIQ21B8jCBKJnDDHQVY2o1i3dyVBmvPpPHRjXW"
+
+
 server:
   port: 8071
