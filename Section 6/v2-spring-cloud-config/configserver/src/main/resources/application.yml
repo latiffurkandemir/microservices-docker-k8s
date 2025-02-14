@@ -2,7 +2,7 @@ spring:
   application:
     name: "configserver"
   profiles:
-    #active: native #if we are using classpath location or filesystem location
+    #active: native #if we are using classpath location or filesystem location, it will be active
     active: git
   cloud:
     config:
